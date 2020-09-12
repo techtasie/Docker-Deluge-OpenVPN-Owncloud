@@ -35,8 +35,8 @@ services:
       - 84.200.70.40
     volumes:
       - /path/to/the/dowloads:/root/Downloads
-      - /path/to/the/completed/downloads:/complete #has to be set in deluge client to /complete
-      - /path/to/deluge/configg:/config
+      - /path/to/the/complete/downloads:/complete #has to be set in deluge client to /complete
+      - /path/to/deluge/config:/config
       - /path/to/openvpn/config:/etc/openvpn
     restart: always 
   
