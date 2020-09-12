@@ -35,6 +35,7 @@ RUN \
 	net-tools \
 	curl \
 	traceroute \
+	kmod \
 	easy-rsa && \
  echo "**** cleanup ****" && \
  rm -rf \
