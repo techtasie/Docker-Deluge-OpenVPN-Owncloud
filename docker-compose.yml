@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+  proxy:
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports:
+      - '8112:8112'
+    depends_on:
+      - deluged
+    networks:
+      - deluged_net
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    restart: always
+  deluged:
+    build:
+      context: .
+      dockerfile: delugeopenvpn.Dockerfile
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - UMASK_SET=022
+    cap_add:
+      - NET_ADMIN
+    networks:
+      deluged_net:
+        ipv4_address: 172.16.238.10
+    devices:
+      - "/dev/net/tun"
+    dns:
+      - 84.200.69.80
+      - 84.200.70.40
+    volumes:
+      - /path/to/the/dowloads:/root/Downloads
+      - /path/to/the/completed/downloads:/complete #has to be set in deluge client to /complete
+      - /path/to/deluge/configg:/config
+      - /path/to/openvpn/config:/etc/openvpn
+    restart: always 
+  
+networks:
+  deluged_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.16.238.0/24"
