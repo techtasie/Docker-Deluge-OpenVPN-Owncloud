@@ -43,6 +43,7 @@ RUN \
 	/tmp/* \
 	/var/tmp/*
 
+# RUN apt update && apt install -y linux-image-$(uname -r)
 WORKDIR /home
 
 COPY main.sh main.sh
@@ -52,7 +53,7 @@ COPY IpExtractor.sh IpExtractor.sh
 COPY OpenVPNconfig.sh OpenVPNconfig.sh
 COPY PortExtractor.sh PortExtractor.sh
 
-VOLUME /config /root/Downloads /complete
+VOLUME /config /root/Downloads /completed
 
 EXPOSE 8112 58846 58946 58946/udp
 
