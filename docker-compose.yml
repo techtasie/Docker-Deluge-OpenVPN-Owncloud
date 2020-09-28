@@ -29,7 +29,6 @@ services:
      build:
        context: ./owncloud
        dockerfile: Dockerfile
-       #image: owncloud:10
      volumes:
        - ./apps:/var/www/html/apps
        - ./owncloud_config:/var/www/html/config
