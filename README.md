@@ -56,7 +56,7 @@ your-password
 ```
 
 ### Start the containers
-Just run:
+Just run in the main directory:
 ```
 docker-compose up -d
 ```
