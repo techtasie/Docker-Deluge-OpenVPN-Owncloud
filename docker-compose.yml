@@ -1,48 +1,71 @@
 version: '3.3'
 
 services:
-  proxy:
-    build:
-      context: .
-      dockerfile: nginx.Dockerfile
-    ports:
-      - '8112:8112'
-    depends_on:
-      - deluged
-    networks:
-      - deluged_net
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    restart: always
-  deluged:
-    build:
-      context: .
-      dockerfile: delugeopenvpn.Dockerfile
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - UMASK_SET=022
-    cap_add:
-      - NET_ADMIN
-    networks:
-      deluged_net:
-        ipv4_address: 172.16.238.10
-    devices:
-      - "/dev/net/tun"
-    dns:
-      - 84.200.69.80
-      - 84.200.70.40
-    volumes:
-      - /path/to/the/dowloads:/root/Downloads
-      - /path/to/the/complete/downloads:/complete #has to be set in deluge client to /complete
-      - /path/to/deluge/config:/config
-      - /path/to/openvpn/config:/etc/openvpn
-    restart: always 
+   deluged:
+     build:
+       context: ./deluged
+       dockerfile: Dockerfile
+     environment:
+       - PUID=1000
+       - PGID=1000
+       - TZ=Europe/London
+       - UMASK_SET=022
+     cap_add:
+       - NET_ADMIN
+     networks:
+       - deluged_net
+     devices:
+       - "/dev/net/tun"
+     dns:
+       - 84.200.69.80
+       - 84.200.70.40
+     volumes:
+       - ./downloads:/root/Downloads
+       - ./data/root/files/Deluge:/completed #has to be set in deluge client to /completed
+       - ./deluged_config:/config
+       - ./openvpn:/etc/openvpn
+     restart: always 
+   owncloud:
+     build:
+       context: ./owncloud
+       dockerfile: Dockerfile
+       #image: owncloud:10
+     volumes:
+       - ./apps:/var/www/html/apps
+       - ./owncloud_config:/var/www/html/config
+       - ./data:/var/www/html/data
+     networks:
+       - owncloud_net
+     restart: always
+   owncloud_proxy:
+     image: nginx:1.19
+     ports:
+       - '443:443'
+       - '80:80'
+     depends_on:
+       - owncloud
+     restart: always
+     networks:
+       - owncloud_net
+     volumes:
+       - ./owncloud_proxy/nginx.conf:/etc/nginx/nginx.conf
+       - ./certs:/etc/nginx/certs
+   deluged_proxy:
+     image: nginx:1.19
+     ports:
+       - '8112:8112'
+     depends_on:
+       - deluged
+     networks:
+       - deluged_net
+     volumes:
+       - ./deluged_proxy/nginx.conf:/etc/nginx/nginx.conf
+     restart: always
+   
+     
   
 networks:
   deluged_net:
     driver: bridge
-    ipam:
-      config:
-        - subnet: "172.16.238.0/24"
+  owncloud_net:
+    driver: bridge

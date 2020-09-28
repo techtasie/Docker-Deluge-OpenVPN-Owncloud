@@ -69,7 +69,7 @@ Privelage()
 {
 	chown -R abc:abc /config
 	chown -R abc:abc /root/Downloads
-	chown -R abc:abc /complete
+	chown -R abc:abc /completed
 }
 
 Init()
