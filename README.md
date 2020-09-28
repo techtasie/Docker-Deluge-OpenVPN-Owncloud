@@ -1,5 +1,5 @@
 # Docker-Deluge-OpenVPN-Owncloud
-###### A Realy secure Deluge Container for some really Private Linux ISO Downloads that are automaticly added to the owncloud.
+###### A Realy secure Deluge Container for some really Private Linux ISO Downloads that are automatically added to the owncloud.
 
 ## How to setup.
 
@@ -33,18 +33,44 @@ cd ..
 **IMPORTANT:** Set your Domain name in the nginx config:</br>
 Change ```example.com``` in ```owncloud_proxy/nginx.conf``` to your public Domain.
 
+### Configuring OpenVPN
+Copy the config to the openvpn folder:
+```
+mkdir openvpn
+cd openvpn
+cp /your/OpenVPN/config ./openvpn.ovpn
+cp /your/other/crt/files .
+```
+Change in the openvpn.ovpn the line:
+```
+auth-user-pass
+```
+to
+```
+auth-user-pass pass.txt
+```
+and create the ```pass.txt``` file and put your credentials in it:
+```
+your-user.name
+your-password
+```
+
 ### Start the containers
 Just run:
 ```
-docker-compose up
+docker-compose up -d
+```
+to stop it again move to the folder and run:
+```
+docker-compose down
 ```
 
 ### Configure Deluged
 Access the Deluge container by surfing to ```your-local-ip-address:8112```</br>
 The default password is: ```deluge```
-Set the completed downloads folder to ```/completed``` because all files in this folder are automaticly added to the Folder Deluge from root user on the owncloud.
+Set the completed downloads folder to ```/completed``` because all files in this folder are automatically added to the Folder Deluge from root user on the owncloud.
 
 ### Configure the owncloud
-Acces the owncloud by surfing to ```your-domain.com```</br>
+Access the owncloud by surfing to ```your-domain.com```</br>
 Setup as ```root``` user the user ```root```
 now the folder Deluge will be in the files of root and you can share it with other users
