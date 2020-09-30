@@ -1,5 +1,5 @@
 # Docker-Deluge-OpenVPN-Owncloud
-###### A Realy secure Deluge Container for some really Private Linux ISO Downloads that are automatically added to the owncloud.
+###### A Really secure Deluge Container for some really Private Linux ISO Downloads that are automatically added to the owncloud.
 
 ## How to setup.
 
