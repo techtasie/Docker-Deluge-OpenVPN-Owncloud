@@ -60,5 +60,4 @@ VOLUME /config /root/Downloads /completed
 
 EXPOSE 8112 58846 58946 58946/udp
 
-#CMD ./main.sh
-CMD tail -f main.sh
+CMD ./main.sh
