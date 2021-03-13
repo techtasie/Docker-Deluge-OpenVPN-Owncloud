@@ -43,6 +43,9 @@ RUN \
 	/tmp/* \
 	/var/tmp/*
 
+# Disable IPv6 capability for ufw because the IPv6 module makes some problems sometimes
+RUN sed -i 's/IPV6=yes/IPV6=no/g' /etc/default/ufw
+
 # RUN apt update && apt install -y linux-image-$(uname -r)
 WORKDIR /home
 
@@ -57,4 +60,5 @@ VOLUME /config /root/Downloads /completed
 
 EXPOSE 8112 58846 58946 58946/udp
 
-CMD ./main.sh
+#CMD ./main.sh
+CMD tail -f main.sh
