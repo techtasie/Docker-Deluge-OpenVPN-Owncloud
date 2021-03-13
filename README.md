@@ -1,5 +1,10 @@
 # Docker-Deluge-OpenVPN-Owncloud
 ###### A Really secure Deluge Container for some really Private Linux ISO Downloads that are automatically added to the owncloud.
+# WARNING
+if you have IPv6 support enabled in your Docker deamon than you have to remove the following line from the Deluge dockerfile
+```
+RUN sed -i 's/IPV6=yes/IPV6=no/g' /etc/default/ufw
+```
 
 ## How to setup.
 
